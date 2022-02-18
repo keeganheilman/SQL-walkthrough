@@ -10,5 +10,6 @@ CREATE TABLE person (
     country VARCHAR(20),
     postal_code VARCHAR(20),
     CONSTRAINT pk_person PRIMARY KEY (person_id),
+    CONSTRAINT check_eye_color CHECK (eye_color IN ('BR','BL','GR'))
 );
 
