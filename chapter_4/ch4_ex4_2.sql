@@ -1,0 +1,36 @@
+-- Exercise 4-2
+-- Which of the payment IDs would be returned by the following filter conditions?
+-- 
+-- `customer_id = 5 AND NOT (amount > 6 OR date(payment_date) = '2005-06-19')`
+-- 
+-- +------------+-------------+--------+--------------------+
+-- | payment_id | customer_id | amount | date(payment_date) |
+-- +------------+-------------+--------+--------------------+
+-- |        101 |           4 |   8.99 | 2005-08-18         |
+-- |        102 |           4 |   1.99 | 2005-08-19         |
+-- |        103 |           4 |   2.99 | 2005-08-20         |
+-- |        104 |           4 |   6.99 | 2005-08-20         |
+-- |        105 |           4 |   4.99 | 2005-08-21         |
+-- |        106 |           4 |   2.99 | 2005-08-22         |
+-- |        107 |           4 |   1.99 | 2005-08-23         |
+-- |        108 |           5 |   0.99 | 2005-05-29         |
+-- |        109 |           5 |   6.99 | 2005-05-31         |
+-- |        110 |           5 |   1.99 | 2005-05-31         |
+-- |        111 |           5 |   3.99 | 2005-06-15         |
+-- |        112 |           5 |   2.99 | 2005-06-16         |
+-- |        113 |           5 |   4.99 | 2005-06-17         |
+-- |        114 |           5 |   2.99 | 2005-06-19         |
+-- |        115 |           5 |   4.99 | 2005-06-20         |
+-- |        116 |           5 |   4.99 | 2005-07-06         |
+-- |        117 |           5 |   2.99 | 2005-07-08         |
+-- |        118 |           5 |   4.99 | 2005-07-09         |
+-- |        119 |           5 |   5.99 | 2005-07-09         |
+-- |        120 |           5 |   1.99 | 2005-07-09         |
+-- +------------+-------------+--------+--------------------+
+
+
+-- ANSWER:
+--  payment_ids < 108 all have a customer_id do not equal 5, and are therefore excluded.
+--  Of those payment_ids with a customer_id equal to 5, payment_id 109 has an amount greater than 6, and is therefore excluded.
+--  Of those payment_ids with a customer_id equal to 5, payment_id 114 has a payment_date equal to '2005-06-19', and is therefore excluded.
+--  The payment_ids that are returned by the filter are 108, 110, 111, 112, 113, 115, 116, 117, 118, 119, and 120.

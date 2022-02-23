@@ -1,0 +1,35 @@
+-- Which of the payment IDs would be returned by the following filter conditions?
+-- 
+-- `customer_id <> 5 AND (amount > 8 OR date(payment_date) = '2005-08-23')`
+--
+-- +------------+-------------+--------+--------------------+
+-- | payment_id | customer_id | amount | date(payment_date) |
+-- +------------+-------------+--------+--------------------+
+-- |        101 |           4 |   8.99 | 2005-08-18         |
+-- |        102 |           4 |   1.99 | 2005-08-19         |
+-- |        103 |           4 |   2.99 | 2005-08-20         |
+-- |        104 |           4 |   6.99 | 2005-08-20         |
+-- |        105 |           4 |   4.99 | 2005-08-21         |
+-- |        106 |           4 |   2.99 | 2005-08-22         |
+-- |        107 |           4 |   1.99 | 2005-08-23         |
+-- |        108 |           5 |   0.99 | 2005-05-29         |
+-- |        109 |           5 |   6.99 | 2005-05-31         |
+-- |        110 |           5 |   1.99 | 2005-05-31         |
+-- |        111 |           5 |   3.99 | 2005-06-15         |
+-- |        112 |           5 |   2.99 | 2005-06-16         |
+-- |        113 |           5 |   4.99 | 2005-06-17         |
+-- |        114 |           5 |   2.99 | 2005-06-19         |
+-- |        115 |           5 |   4.99 | 2005-06-20         |
+-- |        116 |           5 |   4.99 | 2005-07-06         |
+-- |        117 |           5 |   2.99 | 2005-07-08         |
+-- |        118 |           5 |   4.99 | 2005-07-09         |
+-- |        119 |           5 |   5.99 | 2005-07-09         |
+-- |        120 |           5 |   1.99 | 2005-07-09         |
+-- +------------+-------------+--------+--------------------+
+
+
+-- ANSWER: 
+-- payment_id >= 105 all have customer_id of 5, and are therefore filtered out
+-- Of those payment_ids with a customer_id <> 5, payment_id 101 has an amount greater than 8, and is therefore included.
+-- Of those payment_ids with a customer_id <> 5, payment_id 107 has a payment_date of '2005-08-23', and is therefore included.
+-- The payment_ids that are returned by the filter are 101 and 107.
