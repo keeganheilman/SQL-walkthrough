@@ -18,3 +18,4 @@ GROUP BY customer_id
 ORDER BY 2 DESC; -- orders the resulting data by the second column in descending order
 
 
+-- Changes here
