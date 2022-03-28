@@ -18,4 +18,69 @@ GROUP BY customer_id
 ORDER BY 2 DESC; -- orders the resulting data by the second column in descending order
 
 
--- Changes here
+-- using the having clause
+
+SELECT customer_id, count(*)
+FROM rental
+GROUP BY customer_id
+HAVING count(*) >= 40;
+
+
+-- using aggregate functions
+SELECT MAX(amount) max_amt,
+MIN(amount) min_amt,
+AVG(amount) avg_amt,
+SUM(amount) tot_amt,
+COUNT(*) num_payments
+FROM payment;
+
+
+-- using explicit grouping to specify which rows to apply the aggregate functions
+SELECT customer_id,
+MAX(amount) max_amt,
+MIN(amount) min_amt,
+AVG(amount) avg_amt,
+SUM(amount) tot_amt,
+COUNT(*) num_payments
+FROM payment
+GROUP BY customer_id;
+
+
+-- using distinct within the aggregate function
+SELECT COUNT(customer_id) num_rows,
+COUNT(DISTINCT customer_id) num_customers
+FROM payment;
+
+
+-- using multiple expressions in aggregate functions
+SELECT MAX(AGE(return_date::timestamp,rental_date::timestamp))
+FROM rental;
+
+
+-- How are NULL values handled by numeric calculations
+CREATE TABLE number_tbl
+(val SMALLINT);
+
+INSERT INTO number_tbl VALUES (1);
+INSERT INTO number_tbl VALUES (3);
+INSERT INTO number_tbl VALUES (5);
+
+SELECT COUNT(*) num_rows,
+COUNT(val) num_vals,
+SUM(val) total,
+MAX(val) max_val,
+AVG(val) avg_val
+FROM number_tbl;
+
+-- now add NULL value to see effect in calc
+INSERT INTO number_tbl VALUES (NULL);
+
+SELECT COUNT(*) num_rows,
+COUNT(val) num_vals,
+SUM(val) total,
+MAX(val) max_val,
+AVG(val) avg_val
+FROM number_tbl;
+
+-- Sum, MAX, and AVG all appear to ignore NULL values
+
