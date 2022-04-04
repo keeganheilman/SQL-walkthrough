@@ -81,6 +81,54 @@ SUM(val) total,
 MAX(val) max_val,
 AVG(val) avg_val
 FROM number_tbl;
-
 -- Sum, MAX, and AVG all appear to ignore NULL values
 
+
+
+-- single-column grouping
+SELECT actor_id, count(*)
+FROM film_actor
+GROUP BY actor_id;
+
+
+--multicolumn grouping
+SELECT fa.actor_id, f.rating, count(*)
+FROM film_actor fa
+INNER JOIN film f
+ON fa.film_id = f.film_id
+GROUP BY fa.actor_id, f.rating
+ORDER BY 1,2;
+
+-- grouping via expressions
+SELECT extract(YEAR FROM rental_date) as year,
+    COUNT(*) how_many
+FROM rental
+GROUP BY extract(YEAR FROM rental_date);
+
+
+-- with rollup
+SELECT fa.actor_id, f.rating, count(*)
+FROM film_actor fa
+INNER JOIN film f
+ON fa.film_id = f.film_id
+GROUP BY ROLLUP(fa.actor_id, f.rating)
+ORDER BY 1,2;
+
+
+-- with cube
+SELECT fa.actor_id, f.rating, count(*)
+FROM film_actor fa
+INNER JOIN film f
+ON fa.film_id = f.film_id
+GROUP BY CUBE(fa.actor_id, f.rating)
+ORDER BY 1,2;
+
+-- group filter conditions, HAVING clause to be used to filter the data after grouping
+--     cannot include an aggregate function in a query's where clause, which are evaluated before the grouping occurs
+SELECT fa.actor_id, f.rating, count(*)
+FROM film_actor fa
+INNER JOIN film f
+ON fa.film_id = f.film_id
+WHERE f.rating IN ('G', 'PG')
+GROUP BY fa.actor_id, f.rating
+HAVING count(*) >9;
