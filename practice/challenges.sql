@@ -47,28 +47,28 @@
 -- and both created challenges. Because is the maximum number of challenges created, these students are included in the result.
 
 
+
 SELECT h.hacker_id, h.name, count(c.challenge_id) tot_challenges_created
 FROM hackers h
 INNER JOIN challenges c
 ON h.hacker_id = c.hacker_id
 GROUP BY h.hacker_id, h.name
-HAVING tot_challenges_created = (
-    SELECT MAX(tot_challenges)
+HAVING tot_challenges_created IN (
+    SELECT tot_challenges
     FROM (
         SELECT COUNT(*) tot_challenges
         FROM challenges
         GROUP BY hacker_id
-    ) hacker_created_counts
-) 
-OR tot_challenges_created  (
-    SELECT
+    ) hacker_created_counts1
+    GROUP BY tot_challenges
+    HAVING count(*) = 1
+    OR tot_challenges = (
+        SELECT MAX(tot_challenges)
+        FROM (
+            SELECT COUNT(*) tot_challenges
+            FROM challenges
+            GROUP BY hacker_id
+        ) hacker_created_counts2
+    )
 )
 ORDER BY tot_challenges_created DESC, h.hacker_id
-
-
-
-
-
--- if there are multiple people with the same number of challenges created,
---  if it isn't the max number of challenges created,
---  return only the first person for that number of challenges
